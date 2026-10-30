@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { createRemoteJWKSet, decodeJwt, jwtVerify } from 'jose';
 import { createArtemisBootstrapRouter } from './artemis-bootstrap.mjs';
 
 function requiredEnv(name) {
@@ -68,8 +68,24 @@ async function requireCustomerSession(req, res, next) {
       algorithms: ['RS256'],
     }));
   } catch (error) {
+    let claims;
+    try {
+      const unverified = decodeJwt(tokenMatch[1]);
+      claims = {
+        aud: unverified.aud,
+        iss: unverified.iss,
+        ver: unverified.ver,
+        tid: unverified.tid,
+        scp: unverified.scp,
+      };
+    } catch {
+      claims = 'unreadable';
+    }
     console.warn('[Entra Auth] Token validation failed', {
       errorName: error instanceof Error ? error.name : 'UnknownError',
+      errorCode: error?.code,
+      reason: error?.claim ? `${error.claim}: ${error.reason}` : undefined,
+      claims,
     });
     res.status(401).json({ error: 'Invalid access token' });
     return;
