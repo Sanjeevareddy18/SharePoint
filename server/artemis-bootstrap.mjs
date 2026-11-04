@@ -52,7 +52,7 @@ export function createArtemisBootstrapRouter({ requireCustomerSession }) {
     }
 
     console.info('[Artemis Bootstrap] Request accepted; requesting a Runtime token');
-    console.info(`Customer ID: ${customer}`);
+    console.info(`Customer ID: ${JSON.stringify(customer)}`);
 
     try {
       const runtimeResponse = await fetch(`${runtimeBaseUrl}/api/v1/sdk/customer-sessions`, {
