@@ -14,8 +14,13 @@ function getCustomerAttributes(customer) {
   if (typeof customer.plan === 'string') {
     attributes.plan = customer.plan;
   }
+
   if (typeof customer.region === 'string') {
     attributes.region = customer.region;
+  }
+
+  if (typeof customer.email === 'string' && customer.email.trim()) {
+    attributes.email = customer.email.trim().toLowerCase();
   }
 
   return attributes;
@@ -47,6 +52,7 @@ export function createArtemisBootstrapRouter({ requireCustomerSession }) {
     }
 
     console.info('[Artemis Bootstrap] Request accepted; requesting a Runtime token');
+    console.info(`Customer ID: ${customer}`);
 
     try {
       const runtimeResponse = await fetch(`${runtimeBaseUrl}/api/v1/sdk/customer-sessions`, {
