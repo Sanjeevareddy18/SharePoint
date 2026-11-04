@@ -67,6 +67,7 @@ async function requireCustomerSession(req, res, next) {
       audience: audiences,
       algorithms: ['RS256'],
     }));
+    console.info(`Token payload: ${JSON.stringify(payload)}`);
   } catch (error) {
     let claims;
     try {
