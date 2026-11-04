@@ -103,7 +103,7 @@ export function createArtemisBootstrapRouter({ requireCustomerSession }) {
         bootstrapToken: body.bootstrapToken,
         ...(Number.isInteger(body.expiresIn) ? { expiresIn: body.expiresIn } : {}),
       });
-      console.info('[Artemis Bootstrap] Bootstrap completed successfully', {
+      console.info('[Artemis Bootstrap] Bootstrap completed', {
         durationMs: Date.now() - startTime,
         expiresIn: Number.isInteger(body.expiresIn) ? body.expiresIn : undefined,
       });
