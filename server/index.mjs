@@ -102,7 +102,8 @@ async function requireCustomerSession(req, res, next) {
     return;
   }
 
-  req.customer = { id: payload.oid };
+  req.customer = { id: payload.oid, email: payload.preferred_username };
+  console.info(`Customer session established for: ${JSON.stringify(req.customer)}`);
   next();
 }
 
